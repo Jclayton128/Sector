@@ -3,11 +3,16 @@ using UnityEngine;
 public class PlanetHandler : MonoBehaviour
 {
     //refs
-    [SerializeField] SpriteRenderer _ringSelection = null;
-    [SerializeField] RingArranger _ringCities = null;
-    [SerializeField] RingArranger _ringBases = null;
-    [SerializeField] RingArranger _ringShips = null;
-    [SerializeField] RingArranger _ringEnemy = null;
+    [SerializeField] PlanetSelectionDriver _ringSelection = null;
+    [SerializeField] RingDriver _ringCities = null;
+    [SerializeField] RingDriver _ringBases = null;
+    [SerializeField] RingDriver _ringShips = null;
+    [SerializeField] RingDriver _ringEnemy = null;
+
+    //settings
+    [SerializeField] float _commandRate = 0.5f;
+    [SerializeField] FleetHandler _fleetPrefab = null;
+
 
     //state
     [SerializeField] int _citiesOnPlanet = 0;
@@ -15,10 +20,13 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] int _shipsInOrbit = 0;
     [SerializeField] int _enemiesInOrbit = 0;
 
+    bool _isCommanding = false;
+    [SerializeField] float _fleetCommandFactor = 0;
+
 
     private void Start()
     {
-        DehighlightPlanet();
+        _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
         RenderPlanet();
     }
 
@@ -36,18 +44,56 @@ public class PlanetHandler : MonoBehaviour
 
 
 
-    #region Highlighting
+    #region Mouse Response
 
     private void OnMouseEnter()
     {
-        Debug.Log("mouse enter");
-        HighlightPlanet();
+        if (_fleetCommandFactor > 0)
+        {
+            _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Commanded);
+        }
+        else
+        {
+            _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Highlight);
+        }
     }
 
     private void OnMouseExit()
     {
-        Debug.Log("mouse exit");
-        DehighlightPlanet();
+        if (_fleetCommandFactor > 0)
+        {
+            //stay in command-select
+            _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Commanded);
+        }
+        else
+        {
+            _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
+        }
+
+    }
+
+    private void OnMouseOver()
+    {
+        if (_isCommanding)
+        {
+            _fleetCommandFactor += _commandRate * Time.deltaTime;
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        _isCommanding = true;
+        _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Commanding);
+    }
+
+    private void OnMouseUp()
+    {
+        //if releasing while over a valid planet, then create a fleet, fill it with appropriate amount of commanded ships, and send it. Then update this planet's remaining fleet size.
+
+
+        _isCommanding = false;
+        _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
+        _fleetCommandFactor = 0;
     }
 
     public void HighlightPlanet()
