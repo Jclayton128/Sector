@@ -8,6 +8,7 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] RingDriver _ringBases = null;
     [SerializeField] RingDriver _ringShips = null;
     [SerializeField] RingDriver _ringEnemy = null;
+    [SerializeField] CommandHandler _commandHandler = null;
 
     //settings
     [SerializeField] float _commandRate = 0.5f;
@@ -23,9 +24,12 @@ public class PlanetHandler : MonoBehaviour
     bool _isCommanding = false;
     [SerializeField] float _fleetCommandFactor = 0;
 
+    [SerializeField] int _allegiance = 1;
+
 
     private void Start()
     {
+        _commandHandler.StopLine();
         _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
         RenderPlanet();
     }
@@ -42,12 +46,12 @@ public class PlanetHandler : MonoBehaviour
 
     #endregion
 
-
-
     #region Mouse Response
 
     private void OnMouseEnter()
     {
+        InputController.Instance.SetPlanetUnderCursor(this);
+
         if (_fleetCommandFactor > 0)
         {
             _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Commanded);
@@ -60,6 +64,8 @@ public class PlanetHandler : MonoBehaviour
 
     private void OnMouseExit()
     {
+        InputController.Instance.SetPlanetUnderCursor(null);
+
         if (_fleetCommandFactor > 0)
         {
             //stay in command-select
@@ -84,16 +90,36 @@ public class PlanetHandler : MonoBehaviour
     {
         _isCommanding = true;
         _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Commanding);
+        _commandHandler.StartLine();
     }
 
     private void OnMouseUp()
     {
         //if releasing while over a valid planet, then create a fleet, fill it with appropriate amount of commanded ships, and send it. Then update this planet's remaining fleet size.
+        _commandHandler.StopLine();
 
+        //should eventually check range and check planet for validity
+        if (InputController.Instance.PlanetUnderCursor != null && InputController.Instance.PlanetUnderCursor != this)
+        {
+            SendFleet();
+        }
 
         _isCommanding = false;
         _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
         _fleetCommandFactor = 0;
+    }
+
+    private void SendFleet()
+    {
+        PlanetHandler destination = InputController.Instance.PlanetUnderCursor;
+        int numShipsCommanded = 1;
+
+        FleetHandler newFleet = Instantiate(_fleetPrefab, transform.position, Quaternion.identity);
+        newFleet.SetFleet(numShipsCommanded, 1f, destination, _allegiance);
+
+        _shipsInOrbit -= numShipsCommanded;
+
+        RenderPlanet();
     }
 
     public void HighlightPlanet()
@@ -104,6 +130,22 @@ public class PlanetHandler : MonoBehaviour
     public void DehighlightPlanet()
     {
         _ringSelection.enabled = false;
+    }
+
+    #endregion
+
+    #region Fleet Arrival
+
+    public void ReceiveFleet(FleetHandler arrivingFleet)
+    {
+        if (arrivingFleet.Allegiance == _allegiance)
+        {
+            _shipsInOrbit += arrivingFleet.FleetSize;
+            RenderPlanet();
+
+            arrivingFleet.RemoveFleet();
+
+        }
     }
 
     #endregion

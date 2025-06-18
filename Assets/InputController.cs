@@ -3,24 +3,39 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour
 {
-    
+    public static InputController Instance { get; private set; }
 
-/*
-    void Update()
+
+    //state
+    [SerializeField] Vector3 _mousePosition;
+    public Vector3 MousePosition => _mousePosition;
+
+    [SerializeField] PlanetHandler _planetUnderCursor;
+    public PlanetHandler PlanetUnderCursor => _planetUnderCursor;
+
+    private void Awake()
     {
-        UpdateCheckForMouseoverPlanet();
+        Instance = this;
     }
 
-    private void UpdateCheckForMouseoverPlanet()
+    void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+        UpdateMousePosition();
+    }    
 
-        PlanetHandler ph;
-        if (hit.collider.TryGetComponent<PlanetHandler>(out ph))
+    private void UpdateMousePosition()
+    {
+        Plane plane = new Plane(Vector3.back, Vector3.zero); // Define a plane
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray, out float enter))
         {
-            ph.
-        }
-    }*/
+            _mousePosition = ray.GetPoint(enter);
+        }               
+    }
+    
+    public void SetPlanetUnderCursor(PlanetHandler planetUnderCursor)
+    {
+        _planetUnderCursor = planetUnderCursor;
+    }
 }
 
