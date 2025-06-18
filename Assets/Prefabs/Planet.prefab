@@ -2064,13 +2064,13 @@ MonoBehaviour:
   _ringShips: {fileID: 7996703061229187225}
   _ringEnemy: {fileID: 7217629011206405268}
   _commandHandler: {fileID: 4223113615836493516}
-  _commandRate: 0.5
+  _commandRate: 0.75
   _fleetPrefab: {fileID: 2462853266290885456, guid: 3022dfef6b7aba94998bfea4cf9bae47, type: 3}
   _citiesOnPlanet: 0
   _basesInOrbit: 0
-  _shipsInOrbit: 5
+  _shipsInOrbit: 0
   _enemiesInOrbit: 0
-  _fleetCommandFactor: 0
+  _allegiance: 1
 --- !u!58 &7066191517029449134
 CircleCollider2D:
   m_ObjectHideFlags: 0

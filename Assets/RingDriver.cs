@@ -50,6 +50,27 @@ public class RingDriver : MonoBehaviour
 
     }
 
+    public void HighlightSpots(int spotsToHighlight, Color highlightColor)
+    {
+        for (int i = 0; i < _shipSpots.Count; i++)
+        {
+            if (i < spotsToHighlight)
+            {
+                _shipSpots[i].color = highlightColor;
+            }
+            else
+            {
+                _shipSpots[i].color = Color.white;
+            }
+
+            //    _shipSpots[i].transform.position = transform.position + (Vector3)(_unitPoints[i] * _radius);
+            //_shipSpots[i].transform.rotation = Quaternion.Euler(0,0, i * (Mathf.PI / 5f * Mathf.Rad2Deg));
+        }
+
+    }
+
+
+
     private void Update()
     {
         transform.Rotate(Vector3.forward, _spinRate * Time.deltaTime);

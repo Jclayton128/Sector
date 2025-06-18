@@ -11,7 +11,7 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] CommandHandler _commandHandler = null;
 
     //settings
-    [SerializeField] float _commandRate = 0.5f;
+    [SerializeField] float _commandRate = 0.75f;
     [SerializeField] FleetHandler _fleetPrefab = null;
 
 
@@ -22,7 +22,8 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] int _enemiesInOrbit = 0;
 
     bool _isCommanding = false;
-    [SerializeField] float _fleetCommandFactor = 0;
+    float _fleetCommandFactor = 0;
+    int _shipsCommanded;
 
     [SerializeField] int _allegiance = 1;
 
@@ -83,6 +84,11 @@ public class PlanetHandler : MonoBehaviour
         if (_isCommanding)
         {
             _fleetCommandFactor += _commandRate * Time.deltaTime;
+            _shipsCommanded = Mathf.RoundToInt(_shipsInOrbit * _fleetCommandFactor);
+            _shipsCommanded = Mathf.Clamp(_shipsCommanded, 0, _shipsInOrbit);
+
+            _ringShips.HighlightSpots(_shipsCommanded, Color.green);
+
         }
     }
 
@@ -112,12 +118,12 @@ public class PlanetHandler : MonoBehaviour
     private void SendFleet()
     {
         PlanetHandler destination = InputController.Instance.PlanetUnderCursor;
-        int numShipsCommanded = 1;
 
         FleetHandler newFleet = Instantiate(_fleetPrefab, transform.position, Quaternion.identity);
-        newFleet.SetFleet(numShipsCommanded, 1f, destination, _allegiance);
+        newFleet.SetFleet(_shipsCommanded, 1f, destination, _allegiance);
 
-        _shipsInOrbit -= numShipsCommanded;
+        _shipsInOrbit -= _shipsCommanded;
+        _ringShips.HighlightSpots(0, Color.white);
 
         RenderPlanet();
     }
