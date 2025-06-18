@@ -216,6 +216,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _allegiance
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _defendersInOrbit
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _timeBetweenBattles
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8015507358354045292, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: m_Name
       value: Planet_2
@@ -369,6 +381,14 @@ PrefabInstance:
       propertyPath: _shipsInOrbit
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _defendersInOrbit
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _timeBetweenBattles
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8015507358354045292, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: m_Name
       value: Planet
@@ -429,6 +449,14 @@ PrefabInstance:
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _shipsInOrbit
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _defendersInOrbit
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _timeBetweenBattles
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8015507358354045292, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: m_Name

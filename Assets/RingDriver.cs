@@ -31,13 +31,14 @@ public class RingDriver : MonoBehaviour
         }
     }
    
-    public void SetSpots(int fillCount)
+    public void SetSpots(int fillCount, Color color)
     {
         for (int i = 0; i < _shipSpots.Count; i++)
         {
             if (i < fillCount)
             {
                 _shipSpots[i].sprite = _filledSprite;
+                _shipSpots[i].color = color;
             }
             else
             {
