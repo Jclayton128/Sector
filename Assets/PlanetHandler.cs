@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlanetHandler : MonoBehaviour
 {
+    public enum PlanetTypes { Rocky, Gas, Terran, Artifact}
+
     //refs
     [SerializeField] PlanetSelectionDriver _ringSelection = null;
     [SerializeField] RingDriver _ringCities = null;
@@ -23,6 +25,9 @@ public class PlanetHandler : MonoBehaviour
     int _defense_atk = 3;
 
     //state
+    [SerializeField] PlanetTypes _planetType = PlanetTypes.Rocky;
+    public PlanetTypes PlanetType => _planetType;
+
     [SerializeField] int _citiesOnPlanet = 0;
     [SerializeField] int _basesInOrbit = 0;
     [SerializeField] int _defendersInOrbit = 0;
@@ -33,10 +38,11 @@ public class PlanetHandler : MonoBehaviour
     int _shipsCommanded;
 
     [SerializeField] int _allegiance = 1;
+    public int Allegiance => _allegiance;
 
-    [SerializeField] float _countdownToNextBattle;
-    [SerializeField] int _currentDefense_def;
-    [SerializeField] int _currentDefense_atk;
+    float _countdownToNextBattle;
+    int _currentDefense_def;
+    int _currentDefense_atk;
 
 
     #region Flow
@@ -73,29 +79,6 @@ public class PlanetHandler : MonoBehaviour
 
     private void ResolveCombatRound()
     {
-        //int breaker = 999;
-        //while (_currentDefense_def * _currentDefense_atk > 0)
-        //{
-        //    breaker--;
-        //    if (breaker <= 0)
-        //    {
-        //        Debug.Log("Break!");
-        //        break;
-        //    }
-
-        //    int attackRoll_def = UnityEngine.Random.Range(0, _maxAttack_def);
-        //    int attackRoll_atk = UnityEngine.Random.Range(0, _maxAttack_atk);
-
-        //    if (attackRoll_atk > attackRoll_def)
-        //    {
-        //        _currentDefense_def--;
-        //    }
-        //    else
-        //    {
-        //        _currentDefense_atk--;
-        //    }
-        //}
-
         int attackRoll_def = UnityEngine.Random.Range(0, _maxAttack_def);
         int attackRoll_atk = UnityEngine.Random.Range(0, _maxAttack_atk);
 
@@ -248,7 +231,19 @@ public class PlanetHandler : MonoBehaviour
 
     #endregion
 
-    #region Fleet Arrival
+    #region Orbital Additions
+
+    public void ReceiveProducedShip()
+    {
+        _defendersInOrbit++;
+        RenderPlanet();
+    }
+
+    public void ReceiveProducedBase()
+    {
+        _basesInOrbit++;
+        RenderPlanet();
+    }
 
     public void ReceiveFleet(FleetHandler arrivingFleet)
     {

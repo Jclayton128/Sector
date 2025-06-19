@@ -2017,6 +2017,7 @@ GameObject:
   - component: {fileID: 6147042861785427939}
   - component: {fileID: 7066191517029449134}
   - component: {fileID: 5727788846684316246}
+  - component: {fileID: 5492182698152566745}
   m_Layer: 6
   m_Name: Planet
   m_TagString: Untagged
@@ -2066,11 +2067,16 @@ MonoBehaviour:
   _commandHandler: {fileID: 4223113615836493516}
   _commandRate: 0.75
   _fleetPrefab: {fileID: 2462853266290885456, guid: 3022dfef6b7aba94998bfea4cf9bae47, type: 3}
+  _timeBetweenBattles: 1
+  _planetType: 0
   _citiesOnPlanet: 0
   _basesInOrbit: 0
-  _shipsInOrbit: 0
-  _enemiesInOrbit: 0
+  _defendersInOrbit: 5
+  _attackersInOrbit: 0
   _allegiance: 1
+  _countdownToNextBattle: 0
+  _currentDefense_def: 0
+  _currentDefense_atk: 0
 --- !u!58 &7066191517029449134
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2133,6 +2139,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5492182698152566745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8015507358354045292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 896194398a0093b4894c2cbf449b827c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shipProductionRate: 0.1
+  _baseProductionRate: 0.05
+  _farmingBonus: 0.05
+  _researchRate: 1
+  _productionMode: 0
+  _production: 0
 --- !u!1 &8160400510201816533
 GameObject:
   m_ObjectHideFlags: 0
