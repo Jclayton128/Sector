@@ -17,6 +17,7 @@ public class ProductionHandler : MonoBehaviour
     [SerializeField] float _artifactResearchMultiplier = 1.2f;
 
 
+    [SerializeField] float _cityGrowthRate = 0.05f;
     [SerializeField] float _shipProductionRate = 0.1f;
     [SerializeField] float _baseProductionRate = 0.05f;
     [SerializeField] float _farmingBonus = 0.05f;
@@ -26,6 +27,7 @@ public class ProductionHandler : MonoBehaviour
     [SerializeField] ProductionModes _productionMode = ProductionModes.Ships;
     ProductionModes _previousProductionMode;
     [SerializeField] float _production;
+    [SerializeField] float _cityGrowth;
 
 
     void Start()
@@ -51,6 +53,13 @@ public class ProductionHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_planetHandler.CitiesOnPlanet < 1 && _productionMode != ProductionModes.Farming)
+        {
+            SetProductionMode(ProductionModes.Farming);
+        }
+
+        UpdateCityGrowth();
+
         switch ( _productionMode )
         {
             case ProductionModes.Ships:
@@ -72,6 +81,17 @@ public class ProductionHandler : MonoBehaviour
         }
     }
 
+    private void UpdateCityGrowth()
+    {
+        _cityGrowth += Time.deltaTime * (_cityGrowthRate * FactionController.Instance.GetFactionFarmingBonus(_planetHandler.Allegiance) /
+            (_planetHandler.CitiesOnPlanet * _planetHandler.CitiesOnPlanet));
+
+        if (_cityGrowth > 1)
+        {
+            _cityGrowth = 0;
+            _planetHandler.ReceiveCity();
+        }
+    }
 
     private void UpdateShipProduction()
     {
@@ -81,7 +101,7 @@ public class ProductionHandler : MonoBehaviour
         if (_production > 1)
         {
             _production = 0;
-            _planetHandler.ReceiveProducedShip();
+            _planetHandler.ReceiveProducedShips(1 * _planetHandler.CitiesOnPlanet);
         }
     }
 
@@ -91,13 +111,13 @@ public class ProductionHandler : MonoBehaviour
         if (_production > 1)
         {
             _production = 0;
-            _planetHandler.ReceiveProducedBase();
+            _planetHandler.ReceiveProducedBases(1 * _planetHandler.CitiesOnPlanet);
         }
     }
 
     private void UpdateFarmingProduction()
     {
-       //farming doesn't actually produce anything.
+        UpdateCityGrowth();
     }
 
     private void UpdateScienceProduction()
@@ -107,7 +127,7 @@ public class ProductionHandler : MonoBehaviour
         if (_production > 1)
         {
             _production = 0;
-            FactionController.Instance.ModifyFactionResearchCount(_planetHandler.Allegiance,  1);
+            FactionController.Instance.ModifyFactionResearchCount(_planetHandler.Allegiance,  1 * _planetHandler.CitiesOnPlanet);
         }
     }
 

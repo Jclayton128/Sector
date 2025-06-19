@@ -50,6 +50,34 @@ public class FactionController : MonoBehaviour
         ComputerFaction.ResearchPointsCollected = 0;
     }
 
+    public int GetFactionAttack(int allegiance)
+    {
+        if (allegiance == 1) return PlayerFaction.Attack;
+        else if (allegiance == -1) return ComputerFaction.Attack;
+        else return 0;
+    }
+
+    public int GetFactionDefense(int allegiance)
+    {
+        if (allegiance == 1) return PlayerFaction.Defense;
+        else if (allegiance == -1) return ComputerFaction.Defense;
+        else return 0;
+    }
+
+    public float GetFactionRange(int allegiance)
+    {
+        if (allegiance == 1) return PlayerFaction.Range;
+        else if (allegiance == -1) return ComputerFaction.Range;
+        else return 0;
+    }
+
+    public float GetFactionSpeed(int allegiance)
+    {
+        if (allegiance == 1) return PlayerFaction.Speed;
+        else if (allegiance == -1) return ComputerFaction.Speed;
+        else return 0;
+    }
+
     public float GetFactionFarmingBonus(int allegiance)
     {
         if (allegiance == 1) return PlayerFaction.GlobalFarmingBonus;

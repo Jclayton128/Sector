@@ -29,6 +29,7 @@ public class PlanetHandler : MonoBehaviour
     public PlanetTypes PlanetType => _planetType;
 
     [SerializeField] int _citiesOnPlanet = 0;
+    public int CitiesOnPlanet => _citiesOnPlanet;
     [SerializeField] int _basesInOrbit = 0;
     [SerializeField] int _defendersInOrbit = 0;
     [SerializeField] int _attackersInOrbit = 0;
@@ -40,15 +41,17 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] int _allegiance = 1;
     public int Allegiance => _allegiance;
 
-    float _countdownToNextBattle;
+    float _countdownToNextCombatRound;
     int _currentDefense_def;
     int _currentDefense_atk;
+
+    int _attackerAllegiance;
 
 
     #region Flow
     private void Start()
     {
-        _countdownToNextBattle = 0;
+        _countdownToNextCombatRound = 0;
         _commandHandler.StopLine();
         _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
         RenderPlanet();
@@ -68,45 +71,52 @@ public class PlanetHandler : MonoBehaviour
 
         else if (_attackersInOrbit > 0 && _defendersInOrbit > 0)
         {
-            _countdownToNextBattle -= Time.deltaTime;
-            if (_countdownToNextBattle <= 0)
+            _countdownToNextCombatRound -= Time.deltaTime;
+            if (_countdownToNextCombatRound <= 0)
             {
                 ResolveCombatRound();
-                _countdownToNextBattle = _timeBetweenBattles;
+                _countdownToNextCombatRound = _timeBetweenBattles;
             }
         }        
     }
 
     private void ResolveCombatRound()
     {
-        int attackRoll_def = UnityEngine.Random.Range(0, _maxAttack_def);
-        int attackRoll_atk = UnityEngine.Random.Range(0, _maxAttack_atk);
+        int attackRoll_def = UnityEngine.Random.Range(0, FactionController.Instance.GetFactionAttack(_allegiance));
+        int attackRoll_atk = UnityEngine.Random.Range(0, FactionController.Instance.GetFactionAttack(_attackerAllegiance));
 
         if (attackRoll_atk > attackRoll_def)
         {
             _currentDefense_def--;
         }
-        else
+        else if (attackRoll_atk < attackRoll_def)
         {
             _currentDefense_atk--;
+        }
+        else
+        {
+            //nothing happens in a tie
         }
 
         if (_currentDefense_def <= 0)
         {
             _defendersInOrbit--;
+            RenderPlanet();
             Debug.Log("Defender destroyed");
 
             _currentDefense_def = _defense_def;
+
         }
         else if (_currentDefense_atk <= 0)
         {
             _attackersInOrbit--;
+            RenderPlanet();
             Debug.Log("Attacker destroyed");
 
             _currentDefense_atk = _defense_atk;
         }
 
-        RenderPlanet();
+
     }
     
 
@@ -231,17 +241,23 @@ public class PlanetHandler : MonoBehaviour
 
     #endregion
 
-    #region Orbital Additions
+    #region Additions
 
-    public void ReceiveProducedShip()
+    public void ReceiveCity()
     {
-        _defendersInOrbit++;
+        _citiesOnPlanet++;
         RenderPlanet();
     }
 
-    public void ReceiveProducedBase()
+    public void ReceiveProducedShips(int shipsToAdd)
     {
-        _basesInOrbit++;
+        _defendersInOrbit += shipsToAdd;
+        RenderPlanet();
+    }
+
+    public void ReceiveProducedBases(int basesToAdd)
+    {
+        _basesInOrbit += basesToAdd;
         RenderPlanet();
     }
 
@@ -259,6 +275,7 @@ public class PlanetHandler : MonoBehaviour
         else if (arrivingFleet.Allegiance != _allegiance)
         {
             _attackersInOrbit += arrivingFleet.FleetSize;
+            _attackerAllegiance = arrivingFleet.Allegiance;
             _currentDefense_atk = _defense_atk;
             _currentDefense_def = _defense_atk;
         }
