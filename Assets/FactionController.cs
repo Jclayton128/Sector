@@ -6,6 +6,10 @@ public class FactionController : MonoBehaviour
 {
     public static FactionController Instance { get; private set; }
 
+    //refs
+    [SerializeField] FactionStatBlockDriver _factionStatDriver_Player = null;
+    [SerializeField] FactionStatBlockDriver _factionStatDriver_Computer = null;
+
     //settings
     [SerializeField] int _startingAttack = 5;
     [SerializeField] int _startingDefense = 1;
@@ -14,8 +18,8 @@ public class FactionController : MonoBehaviour
     [SerializeField] float _startingSensor = 5f;
 
     //state
-    public FactionStat PlayerFaction;
-    public FactionStat ComputerFaction;
+    public FactionStat PlayerFaction { get; private set; }
+    public FactionStat ComputerFaction { get; private set; }
 
     private void Awake()
     {
@@ -89,11 +93,14 @@ public class FactionController : MonoBehaviour
     {
         if (allegiance == 1)
         {
+            //Debug.Log("Changing Farming by " + amountToAdd);
             PlayerFaction.GlobalFarmingBonus += amountToAdd;
+            _factionStatDriver_Player.PushFactionStatus(PlayerFaction);
         }
         else if (allegiance == -1)
         {
             ComputerFaction.GlobalFarmingBonus += amountToAdd;
+            _factionStatDriver_Computer.PushFactionStatus(ComputerFaction);
         }
     }
 
@@ -109,10 +116,12 @@ public class FactionController : MonoBehaviour
         if (allegiance == 1)
         {
             PlayerFaction.ResearchPointsCollected += amountToAdd;
+            _factionStatDriver_Player.PushFactionStatus(PlayerFaction);
         }
         else if (allegiance == -1)
         {
             ComputerFaction.ResearchPointsCollected += amountToAdd;
+            _factionStatDriver_Computer.PushFactionStatus(ComputerFaction);
         }
     }
 }

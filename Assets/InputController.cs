@@ -10,6 +10,9 @@ public class InputController : MonoBehaviour
     [SerializeField] Vector3 _mousePosition;
     public Vector3 MousePosition => _mousePosition;
 
+
+    [SerializeField] PlanetHandler _commandedPlanet;
+
     [SerializeField] PlanetHandler _planetUnderCursor;
     public PlanetHandler PlanetUnderCursor => _planetUnderCursor;
 
@@ -21,7 +24,44 @@ public class InputController : MonoBehaviour
     void Update()
     {
         UpdateMousePosition();
-    }    
+        UpdateMouseClick();
+    }
+
+    private void UpdateMouseClick()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_planetUnderCursor != null)
+            {
+                _commandedPlanet = _planetUnderCursor;
+                _planetUnderCursor.HandleLMBDown(); 
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (_commandedPlanet != null)
+            {
+                _commandedPlanet.HandleLMBUp();
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (_planetUnderCursor != null)
+            {
+                _planetUnderCursor.HandleRMBDown();
+            }
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            if (_planetUnderCursor != null)
+            {
+                _planetUnderCursor.HandleRMBUp();
+            }
+        }
+    }
 
     private void UpdateMousePosition()
     {

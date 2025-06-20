@@ -933,6 +933,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &4623918800310709891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8140599649802881908}
+  - component: {fileID: 6361283617775191161}
+  m_Layer: 0
+  m_Name: Icon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8140599649802881908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623918800310709891}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4831694772021841593}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &6361283617775191161
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623918800310709891}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: c67eab0850094224f82a2288fe4a0150, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 5.12, y: 5.12}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &5151455295873201253
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,16 +2151,15 @@ MonoBehaviour:
   _commandHandler: {fileID: 4223113615836493516}
   _commandRate: 0.75
   _fleetPrefab: {fileID: 2462853266290885456, guid: 3022dfef6b7aba94998bfea4cf9bae47, type: 3}
-  _timeBetweenBattles: 1
+  _timeBetweenBattles: 0.2
   _planetType: 0
   _citiesOnPlanet: 0
   _basesInOrbit: 0
   _defendersInOrbit: 5
   _attackersInOrbit: 0
   _allegiance: 1
-  _countdownToNextBattle: 0
-  _currentDefense_def: 0
-  _currentDefense_atk: 0
+  _currentDefense_owner: 0
+  _currentDefense_invader: 0
 --- !u!58 &7066191517029449134
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2151,12 +2234,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 896194398a0093b4894c2cbf449b827c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _modeSprite: {fileID: 6361283617775191161}
+  _icons:
+  - {fileID: 21300000, guid: bf32e9dc2c806f741938d071e7ffd750, type: 3}
+  - {fileID: 21300000, guid: e835b45fe32d68348ae87f569db57c11, type: 3}
+  - {fileID: 21300000, guid: 43001a2ac21067a47a866028bf67d2a6, type: 3}
+  - {fileID: 21300000, guid: c67eab0850094224f82a2288fe4a0150, type: 3}
+  _rockyProductionMultiplier: 1.2
+  _terranFarmingMultiplier: 1.2
+  _artifactResearchMultiplier: 1.2
+  _cityGrowthRate: 0.05
   _shipProductionRate: 0.1
   _baseProductionRate: 0.05
   _farmingBonus: 0.05
   _researchRate: 1
   _productionMode: 0
   _production: 0
+  _cityGrowth: 0
 --- !u!1 &8160400510201816533
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,7 +2280,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8140599649802881908}
   m_Father: {fileID: 738949123148995703}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4090190642874371128

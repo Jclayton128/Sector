@@ -1,22 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class ProductionHandler : MonoBehaviour
 {
-    public enum ProductionModes { Ships, Bases, Farming, Science}
+    public enum ProductionModes { Farming, Ships, Bases, Research, Count}
 
 
     //refs
-    [SerializeField] PlanetHandler _planetHandler;
+    PlanetHandler _planetHandler;
+    [SerializeField] SpriteRenderer _modeSprite = null;
 
     //settings
+    [Header("Production Icons")]
+    [Tooltip("0: Farming, 1: Ships, 2: Bases, 3: Research")]
+    [SerializeField] Sprite[] _icons = null;
+
+    [Header("Planet Type Multipliers")]
     [SerializeField] float _rockyProductionMultiplier = 1.2f;
     [SerializeField] float _terranFarmingMultiplier = 1.2f;
     [SerializeField] float _artifactResearchMultiplier = 1.2f;
 
-
+    [Header("Base Rates")]
     [SerializeField] float _cityGrowthRate = 0.05f;
     [SerializeField] float _shipProductionRate = 0.1f;
     [SerializeField] float _baseProductionRate = 0.05f;
@@ -24,8 +31,8 @@ public class ProductionHandler : MonoBehaviour
     [SerializeField] float _researchRate = 1f;
 
     //state
-    [SerializeField] ProductionModes _productionMode = ProductionModes.Ships;
-    ProductionModes _previousProductionMode;
+    ProductionModes _productionMode = ProductionModes.Count;
+    //ProductionModes _previousProductionMode = ProductionModes.Count;
     [SerializeField] float _production;
     [SerializeField] float _cityGrowth;
 
@@ -33,6 +40,7 @@ public class ProductionHandler : MonoBehaviour
     void Start()
     {
         _planetHandler = GetComponent<PlanetHandler>();
+        SetProductionMode(ProductionModes.Farming);
         if (_planetHandler.PlanetType == PlanetHandler.PlanetTypes.Rocky)
         {
             _shipProductionRate *= _rockyProductionMultiplier;
@@ -49,6 +57,8 @@ public class ProductionHandler : MonoBehaviour
             _researchRate *= _artifactResearchMultiplier;
         }
     }
+
+    #region Flow
 
     // Update is called once per frame
     void Update()
@@ -74,7 +84,7 @@ public class ProductionHandler : MonoBehaviour
                 UpdateFarmingProduction();
                 break;
 
-            case ProductionModes.Science:
+            case ProductionModes.Research:
                 UpdateScienceProduction();
                 break;
 
@@ -131,24 +141,40 @@ public class ProductionHandler : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Mode Changing
+    public void IncrementProductionMode()
+    {
+        int index = (int)_productionMode;
+        index++;
+        if (index >= (int)ProductionModes.Count)
+        {
+            index = 0;
+        }
+
+        SetProductionMode((ProductionModes)index);
+    }
+
     public void SetProductionMode(ProductionModes newProductionMode)
     {
-        _previousProductionMode = _productionMode;
+        if (_productionMode == ProductionModes.Farming)
+        {
+            FactionController.Instance.ModifyFactionFarmingBonus(
+                _planetHandler.Allegiance, -1 * _farmingBonus);
+        }
 
         _productionMode = newProductionMode;
         _production = 0;
-
-        if (_previousProductionMode == ProductionModes.Farming)
-        {
-            FactionController.Instance.ModifyFactionFarmingBonus(
-                _planetHandler.Allegiance, -_farmingBonus);
-        }
 
         if (_productionMode == ProductionModes.Farming)
         {
             FactionController.Instance.ModifyFactionFarmingBonus(
                 _planetHandler.Allegiance, _farmingBonus);
-        }       
+        }
 
+        _modeSprite.sprite = _icons[(int)_productionMode];
     }
+
+    #endregion
 }

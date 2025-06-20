@@ -12,6 +12,7 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] RingDriver _ringShips = null;
     [SerializeField] RingDriver _ringEnemy = null;
     [SerializeField] CommandHandler _commandHandler = null;
+    ProductionHandler _productionHandler;
 
     //settings
     [SerializeField] float _commandRate = 0.75f;
@@ -19,10 +20,7 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] float _timeBetweenBattles = 0.5f;
 
     //stub in faction 
-    int _maxAttack_def = 5;
-    int _maxAttack_atk = 25;
-    int _defense_def = 5;
-    int _defense_atk = 3;
+
 
     //state
     [SerializeField] PlanetTypes _planetType = PlanetTypes.Rocky;
@@ -42,8 +40,8 @@ public class PlanetHandler : MonoBehaviour
     public int Allegiance => _allegiance;
 
     float _countdownToNextCombatRound;
-    int _currentDefense_def;
-    int _currentDefense_atk;
+    [SerializeField] int _currentDefense_owner;
+    [SerializeField] int _currentDefense_invader;
 
     int _attackerAllegiance;
 
@@ -51,6 +49,8 @@ public class PlanetHandler : MonoBehaviour
     #region Flow
     private void Start()
     {
+        _productionHandler = GetComponent<ProductionHandler>();
+
         _countdownToNextCombatRound = 0;
         _commandHandler.StopLine();
         _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
@@ -87,33 +87,52 @@ public class PlanetHandler : MonoBehaviour
 
         if (attackRoll_atk > attackRoll_def)
         {
-            _currentDefense_def--;
+            _currentDefense_owner--;
         }
         else if (attackRoll_atk < attackRoll_def)
         {
-            _currentDefense_atk--;
+            _currentDefense_invader--;
         }
         else
         {
             //nothing happens in a tie
         }
 
-        if (_currentDefense_def <= 0)
+        if (_currentDefense_owner <= 0)
         {
-            _defendersInOrbit--;
-            RenderPlanet();
-            Debug.Log("Defender destroyed");
+            if (_basesInOrbit > 0)
+            {
+                _basesInOrbit--;
+                RenderPlanet();
+                Debug.Log("Defender Base destroyed");
+            }
+            else
+            {
+                _defendersInOrbit--;
+                RenderPlanet();
+                Debug.Log("Defender Ship destroyed");
+            }
 
-            _currentDefense_def = _defense_def;
+            if (_basesInOrbit > 0)
+            {
+                _currentDefense_owner = 3 * FactionController.Instance.GetFactionDefense(_allegiance);
+            }
+            else
+            {
+                _currentDefense_owner = FactionController.Instance.GetFactionDefense(_allegiance);
+            }
+
+
+
 
         }
-        else if (_currentDefense_atk <= 0)
+        else if (_currentDefense_invader <= 0)
         {
             _attackersInOrbit--;
             RenderPlanet();
-            Debug.Log("Attacker destroyed");
+            //Debug.Log("Attacker destroyed");
 
-            _currentDefense_atk = _defense_atk;
+            _currentDefense_invader = FactionController.Instance.GetFactionDefense(_attackerAllegiance);
         }
 
 
@@ -193,14 +212,14 @@ public class PlanetHandler : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    public void HandleLMBDown()
     {
         _isCommanding = true;
         _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Commanding);
         _commandHandler.StartLine();
     }
 
-    private void OnMouseUp()
+    public void HandleLMBUp()
     {
         //if releasing while over a valid planet, then create a fleet, fill it with appropriate amount of commanded ships, and send it. Then update this planet's remaining fleet size.
         _commandHandler.StopLine();
@@ -216,12 +235,23 @@ public class PlanetHandler : MonoBehaviour
         _fleetCommandFactor = 0;
     }
 
+    public void HandleRMBDown()
+    {
+        _productionHandler.IncrementProductionMode();
+    }
+
+    public void HandleRMBUp()
+    {
+
+    }
+
+
     private void SendFleet()
     {
         PlanetHandler destination = InputController.Instance.PlanetUnderCursor;
 
         FleetHandler newFleet = Instantiate(_fleetPrefab, transform.position, Quaternion.identity);
-        newFleet.SetFleet(_shipsCommanded, 1f, destination, _allegiance);
+        newFleet.SetFleet(_shipsCommanded, FactionController.Instance.GetFactionSpeed(_allegiance), destination, _allegiance);
 
         _defendersInOrbit -= _shipsCommanded;
         _ringShips.HighlightSpots(0, Color.white);
@@ -276,8 +306,16 @@ public class PlanetHandler : MonoBehaviour
         {
             _attackersInOrbit += arrivingFleet.FleetSize;
             _attackerAllegiance = arrivingFleet.Allegiance;
-            _currentDefense_atk = _defense_atk;
-            _currentDefense_def = _defense_atk;
+            _currentDefense_invader = FactionController.Instance.GetFactionDefense(_attackerAllegiance);
+            if (_basesInOrbit > 0)
+            {
+                _currentDefense_owner = 3 * FactionController.Instance.GetFactionDefense(_allegiance);
+            }
+            else
+            {
+                _currentDefense_owner = FactionController.Instance.GetFactionDefense(_allegiance);
+            }
+                
         }
 
         RenderPlanet();
