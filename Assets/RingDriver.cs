@@ -5,7 +5,7 @@ using System;
 
 public class RingDriver : MonoBehaviour
 {
-
+    public enum RingTypes { City, Ship, Base}
 
     //settings
     [SerializeField] float _radius = 0.4f;
@@ -13,6 +13,7 @@ public class RingDriver : MonoBehaviour
     [SerializeField] float _spinRate = 10f;
     [SerializeField] Sprite _filledSprite = null;
     [SerializeField] Sprite _emptySprite = null;
+    [SerializeField] RingTypes _ringTypes = RingTypes.City;
 
     //state
     [SerializeField] List<SpriteRenderer> _shipSpots;
@@ -33,10 +34,25 @@ public class RingDriver : MonoBehaviour
    
     public void SetSpots(int fillCount, Color color)
     {
+        //int index = fillCount - 1;
+        //int tens = 0;
+        //int hundreds = 0;
+
+        //if (index > 0 && (index % 10 == 0))
+        //{
+        //    tens++;
+        //    if (tens > 10) tens = 0;
+        //}
+
+        //int ones = index % 10;
+        //_counterImages[ones].color = _counterColorMenu[tens];
+
+
         for (int i = 0; i < _shipSpots.Count; i++)
         {
             if (i < fillCount)
             {
+
                 _shipSpots[i].sprite = _filledSprite;
                 _shipSpots[i].color = color;
             }

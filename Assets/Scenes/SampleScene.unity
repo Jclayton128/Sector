@@ -380,6 +380,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _attackersInOrbit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _defendersInOrbit
       value: 3
       objectReference: {fileID: 0}
@@ -708,6 +712,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _allegiance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _basesInOrbit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _citiesOnPlanet
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _attackersInOrbit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _defendersInOrbit
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6361283617775191161, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -716,9 +740,21 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7403557423899383466, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.789
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403557423899383466, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_FillOrigin
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8015507358354045292, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: m_Name
       value: Planet
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953573785176699646, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.701
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -849,12 +885,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _allegiance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _basesInOrbit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _shipsInOrbit
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _citiesOnPlanet
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _attackersInOrbit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _defendersInOrbit
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _timeBetweenBattles
