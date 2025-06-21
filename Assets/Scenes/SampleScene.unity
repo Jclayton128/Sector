@@ -376,8 +376,12 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _basesInOrbit
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _defendersInOrbit
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _timeBetweenBattles

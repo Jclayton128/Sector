@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProductionHandler : MonoBehaviour
 {
@@ -12,6 +12,9 @@ public class ProductionHandler : MonoBehaviour
     //refs
     PlanetHandler _planetHandler;
     [SerializeField] SpriteRenderer _modeSprite = null;
+    [SerializeField] Image _cityGrowthRing = null;
+    [SerializeField] Image _productionGrowthRing = null;
+
 
     //settings
     [Header("Production Icons")]
@@ -25,8 +28,7 @@ public class ProductionHandler : MonoBehaviour
 
     [Header("Base Rates")]
     [SerializeField] float _cityGrowthRate = 0.05f;
-    [SerializeField] float _shipProductionRate = 0.1f;
-    [SerializeField] float _baseProductionRate = 0.05f;
+    [SerializeField] float _productionRate = 0.1f;
     [SerializeField] float _farmingBonus = 0.05f;
     [SerializeField] float _researchRate = 1f;
 
@@ -40,11 +42,13 @@ public class ProductionHandler : MonoBehaviour
     void Start()
     {
         _planetHandler = GetComponent<PlanetHandler>();
+        _productionGrowthRing.fillAmount = 0;
+        _cityGrowthRing.fillAmount = 0;
+
         SetProductionMode(ProductionModes.Farming);
         if (_planetHandler.PlanetType == PlanetHandler.PlanetTypes.Rocky)
         {
-            _shipProductionRate *= _rockyProductionMultiplier;
-            _baseProductionRate *= _rockyProductionMultiplier;
+            _productionRate *= _rockyProductionMultiplier;
         }
 
         if (_planetHandler.PlanetType == PlanetHandler.PlanetTypes.Terran)
@@ -70,6 +74,8 @@ public class ProductionHandler : MonoBehaviour
 
         UpdateCityGrowth();
 
+
+
         switch ( _productionMode )
         {
             case ProductionModes.Ships:
@@ -94,7 +100,9 @@ public class ProductionHandler : MonoBehaviour
     private void UpdateCityGrowth()
     {
         _cityGrowth += Time.deltaTime * (_cityGrowthRate * FactionController.Instance.GetFactionFarmingBonus(_planetHandler.Allegiance) /
-            (_planetHandler.CitiesOnPlanet * _planetHandler.CitiesOnPlanet));
+            (0.5f + (_planetHandler.CitiesOnPlanet * _planetHandler.CitiesOnPlanet / 2f)));
+
+        _cityGrowthRing.fillAmount = _cityGrowth / 1;
 
         if (_cityGrowth > 1)
         {
@@ -107,7 +115,9 @@ public class ProductionHandler : MonoBehaviour
     {
         //_production += Time.deltaTime * (_shipProductionRate);
 
-        _production += Time.deltaTime * (_shipProductionRate * FactionController.Instance.GetFactionFarmingBonus(_planetHandler.Allegiance));
+        _production += Time.deltaTime * (_productionRate * FactionController.Instance.GetFactionFarmingBonus(_planetHandler.Allegiance));
+        _productionGrowthRing.fillAmount = _production / 1;
+
         if (_production > 1)
         {
             _production = 0;
@@ -117,7 +127,9 @@ public class ProductionHandler : MonoBehaviour
 
     private void UpdateBaseProduction()
     {
-        _production += Time.deltaTime * (_baseProductionRate * FactionController.Instance.GetFactionFarmingBonus(_planetHandler.Allegiance));
+        _production += Time.deltaTime * (_productionRate * FactionController.Instance.GetFactionFarmingBonus(_planetHandler.Allegiance)) / 2;
+        _productionGrowthRing.fillAmount = _production / 1;
+
         if (_production > 1)
         {
             _production = 0;
@@ -165,7 +177,7 @@ public class ProductionHandler : MonoBehaviour
         }
 
         _productionMode = newProductionMode;
-        _production = 0;
+        //_production = 0;
 
         if (_productionMode == ProductionModes.Farming)
         {

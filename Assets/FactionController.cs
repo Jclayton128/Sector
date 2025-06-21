@@ -24,11 +24,7 @@ public class FactionController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-
-    private void Start()
-    {
+ 
         PlayerFaction = new FactionStat();
         ComputerFaction = new FactionStat();
 
