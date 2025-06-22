@@ -15,6 +15,8 @@ public class IconLibrary : MonoBehaviour
     public Sprite Base_10 = null;
     public Sprite Base_100 = null;
 
+    public ShipHandler ShipPrefab = null;
+
     private void Awake()
     {
         Instance = this;

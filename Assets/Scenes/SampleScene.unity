@@ -323,6 +323,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4110ee8cb1b16cd4288ab8d6474b7455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &170536322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 170536324}
+  - component: {fileID: 170536323}
+  m_Layer: 0
+  m_Name: Library
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &170536323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170536322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1806e9deb8791b47ac8713bf38b9fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ship_1: {fileID: 2111436282999558937, guid: 6a5ea4a127b13e54dbe49e54940889cd, type: 3}
+  Ship_10: {fileID: -6065484490946029943, guid: 16d00f87551d788408fb6d6092a77701, type: 3}
+  Ship_100: {fileID: -3159062719267100960, guid: 69433493a4d974143a30f995116d747f, type: 3}
+  Base_1: {fileID: 1471139332442960654, guid: 70bd90aed9b34a240966415625319de4, type: 3}
+  Base_10: {fileID: 2248593205998495839, guid: 303e76a6af444dc48a9549b066f2dcf7, type: 3}
+  Base_100: {fileID: 6867016993836950335, guid: 05da6336a80bf8143b32f8d033ea2c5a, type: 3}
+  ShipPrefab: {fileID: 8918268344123577727, guid: 023eb6703b8f1a741a847227cbda75c0, type: 3}
+--- !u!4 &170536324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170536322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &346212460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -377,7 +428,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _basesInOrbit
-      value: 2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: _citiesOnPlanet
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _attackersInOrbit
@@ -385,7 +440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _defendersInOrbit
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _timeBetweenBattles
@@ -460,7 +515,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -712,6 +767,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2047253976469059891, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397578668325175792, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941388809131916108, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552916525401443232, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5566012277392263620, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _allegiance
       value: 1
@@ -722,7 +797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _citiesOnPlanet
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _attackersInOrbit
@@ -740,6 +815,14 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6565390484483204386, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061130867406912405, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7403557423899383466, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: m_FillAmount
       value: 0.789
@@ -752,9 +835,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planet
       objectReference: {fileID: 0}
+    - target: {fileID: 8103108275150656634, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846641093454391144, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8953573785176699646, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: m_FillAmount
       value: 0.701
+      objectReference: {fileID: 0}
+    - target: {fileID: 9174374571656619899, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1052,4 +1147,5 @@ SceneRoots:
   - {fileID: 346212460}
   - {fileID: 160715050}
   - {fileID: 1165545635}
+  - {fileID: 170536324}
   - {fileID: 661383247}

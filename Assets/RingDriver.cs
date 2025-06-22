@@ -32,22 +32,15 @@ public class RingDriver : MonoBehaviour
         }
     }
    
+    public Vector2 GetRandomPositionInOrbit()
+    {
+        float randRadius = UnityEngine.Random.Range(_radius * 0.9f, _radius * 1.1f);
+        Vector2 pos = transform.position + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * randRadius;
+        return pos;
+    }
+
     public void SetSpots(int fillCount, Color color)
     {
-        //int index = fillCount - 1;
-        //int tens = 0;
-        //int hundreds = 0;
-
-        //if (index > 0 && (index % 10 == 0))
-        //{
-        //    tens++;
-        //    if (tens > 10) tens = 0;
-        //}
-
-        //int ones = index % 10;
-        //_counterImages[ones].color = _counterColorMenu[tens];
-
-
         for (int i = 0; i < _shipSpots.Count; i++)
         {
             if (i < fillCount)

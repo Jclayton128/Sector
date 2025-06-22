@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlanetHandler : MonoBehaviour
@@ -29,8 +30,6 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] int _citiesOnPlanet = 0;
     public int CitiesOnPlanet => _citiesOnPlanet;
     [SerializeField] int _basesInOrbit = 0;
-    [SerializeField] int _defendersInOrbit = 0;
-    [SerializeField] int _attackersInOrbit = 0;
 
     bool _isCommanding = false;
     float _fleetCommandFactor = 0;
@@ -44,6 +43,9 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] int _currentDefense_invader;
 
     int _attackerAllegiance;
+
+    [SerializeField] List<ShipHandler> _shipsInOrbit_Owner = new List<ShipHandler>();
+    [SerializeField] List<ShipHandler> _shipsInOrbit_Invader = new List<ShipHandler>();
 
 
     #region Flow
@@ -59,17 +61,17 @@ public class PlanetHandler : MonoBehaviour
 
     private void Update()
     {
-        if (_attackersInOrbit > 0 && _defendersInOrbit == 0)
+        if (_shipsInOrbit_Invader.Count > 0 && _shipsInOrbit_Owner.Count == 0)
         {
             //invert allegiance
             _allegiance *= -1;
 
-            _defendersInOrbit = _attackersInOrbit;
-            _attackersInOrbit = 0;
-            RenderPlanet();
+            _shipsInOrbit_Owner = _shipsInOrbit_Invader;
+            _shipsInOrbit_Invader.Clear();
         }
 
-        else if (_attackersInOrbit > 0 && _defendersInOrbit > 0)
+        //include bases in the defender count
+        else if (_shipsInOrbit_Invader.Count > 0 && (_shipsInOrbit_Owner.Count) > 0)
         {
             _countdownToNextCombatRound -= Time.deltaTime;
             if (_countdownToNextCombatRound <= 0)
@@ -103,13 +105,16 @@ public class PlanetHandler : MonoBehaviour
             if (_basesInOrbit > 0)
             {
                 _basesInOrbit--;
-                RenderPlanet();
+                //RenderPlanet();
                 Debug.Log("Defender Base destroyed");
             }
             else
             {
-                _defendersInOrbit--;
-                RenderPlanet();
+                int last = _shipsInOrbit_Owner.Count - 1;
+                _shipsInOrbit_Owner.RemoveAt(last);
+                _shipsInOrbit_Owner[last].DestroySelf();
+
+                //RenderPlanet();
                 Debug.Log("Defender Ship destroyed");
             }
 
@@ -128,7 +133,9 @@ public class PlanetHandler : MonoBehaviour
         }
         else if (_currentDefense_invader <= 0)
         {
-            _attackersInOrbit--;
+            int last = _shipsInOrbit_Invader.Count - 1;
+            _shipsInOrbit_Invader.RemoveAt(last);
+            _shipsInOrbit_Invader[last].DestroySelf();
             RenderPlanet();
             //Debug.Log("Attacker destroyed");
 
@@ -161,8 +168,8 @@ public class PlanetHandler : MonoBehaviour
 
         _ringCities.SetSpots(_citiesOnPlanet, col);
         _ringBases.SetSpots(_basesInOrbit, col);
-        _ringShips.SetSpots(_defendersInOrbit, col);
-        _ringEnemy.SetSpots(_attackersInOrbit, anticol);
+        //_ringShips.SetSpots(_defendersInOrbit, col);
+        //_ringEnemy.SetSpots(_attackersInOrbit, anticol);
     }
 
     #endregion
@@ -204,8 +211,8 @@ public class PlanetHandler : MonoBehaviour
         if (_isCommanding)
         {
             _fleetCommandFactor += _commandRate * Time.deltaTime;
-            _shipsCommanded = Mathf.RoundToInt(_defendersInOrbit * _fleetCommandFactor);
-            _shipsCommanded = Mathf.Clamp(_shipsCommanded, 0, _defendersInOrbit);
+            _shipsCommanded = Mathf.RoundToInt(_shipsInOrbit_Owner.Count * _fleetCommandFactor);
+            _shipsCommanded = Mathf.Clamp(_shipsCommanded, 0, _shipsInOrbit_Owner.Count);
 
             _ringShips.HighlightSpots(_shipsCommanded, Color.green);
 
@@ -227,7 +234,7 @@ public class PlanetHandler : MonoBehaviour
         //should eventually check range and check planet for validity
         if (InputController.Instance.PlanetUnderCursor != null && InputController.Instance.PlanetUnderCursor != this)
         {
-            SendFleet();
+            SendFleet(_shipsCommanded);
         }
 
         _isCommanding = false;
@@ -245,19 +252,30 @@ public class PlanetHandler : MonoBehaviour
 
     }
 
-
-    private void SendFleet()
+    private void SendFleet(int numberOfShipsToSend)
     {
-        PlanetHandler destination = InputController.Instance.PlanetUnderCursor;
+        List<ShipHandler> shipsToSend = new List<ShipHandler>(_shipsInOrbit_Owner.GetRange(0, numberOfShipsToSend));
+        foreach (var ship in shipsToSend)
+        {
+            ship.SetShipDestinationAsPlanet(InputController.Instance.PlanetUnderCursor);
+            _shipsInOrbit_Owner.Remove(ship);
+        }
 
-        FleetHandler newFleet = Instantiate(_fleetPrefab, transform.position, Quaternion.identity);
-        newFleet.SetFleet(_shipsCommanded, FactionController.Instance.GetFactionSpeed(_allegiance), destination, _allegiance);
-
-        _defendersInOrbit -= _shipsCommanded;
-        _ringShips.HighlightSpots(0, Color.white);
-
-        RenderPlanet();
     }
+
+
+    //private void SendFleet()
+    //{
+    //    PlanetHandler destination = InputController.Instance.PlanetUnderCursor;
+
+    //    FleetHandler newFleet = Instantiate(_fleetPrefab, transform.position, Quaternion.identity);
+    //    newFleet.SetFleet(_shipsCommanded, FactionController.Instance.GetFactionSpeed(_allegiance), destination, _allegiance);
+
+    //    _defendersInOrbit -= _shipsCommanded;
+    //    _ringShips.HighlightSpots(0, Color.white);
+
+    //    RenderPlanet();
+    //}
 
     public void HighlightPlanet()
     {
@@ -279,11 +297,32 @@ public class PlanetHandler : MonoBehaviour
         RenderPlanet();
     }
 
-    public void ReceiveProducedShips(int shipsToAdd)
+    public void ReceiveShipHandler(ShipHandler newShip)
     {
-        _defendersInOrbit += shipsToAdd;
-        RenderPlanet();
+        if (newShip.Allegiance == _allegiance)
+        {
+            _shipsInOrbit_Owner.Add(newShip);
+            newShip.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
+        }
+        else if (newShip.Allegiance != _allegiance && _shipsInOrbit_Owner.Count > 0)
+        {
+            _shipsInOrbit_Invader.Add(newShip);
+            newShip.SetShipDestinationInOrbit(_ringEnemy.GetRandomPositionInOrbit(), _ringEnemy.transform);
+        }
+        else if (_shipsInOrbit_Owner.Count == 0)
+        {
+            _allegiance = newShip.Allegiance;
+        }
+
+        
+        
     }
+
+    //public void ReceiveProducedShips(int shipsToAdd)
+    //{
+    //    _defendersInOrbit += shipsToAdd;
+    //    RenderPlanet();
+    //}
 
     public void ReceiveProducedBases(int basesToAdd)
     {
@@ -291,36 +330,38 @@ public class PlanetHandler : MonoBehaviour
         RenderPlanet();
     }
 
-    public void ReceiveFleet(FleetHandler arrivingFleet)
-    {
-        if (_allegiance == 0)
-        {
-            _defendersInOrbit += arrivingFleet.FleetSize;
-            _allegiance = arrivingFleet.Allegiance;
-        }
-        else if (arrivingFleet.Allegiance == _allegiance)
-        {
-            _defendersInOrbit += arrivingFleet.FleetSize;
-        }
-        else if (arrivingFleet.Allegiance != _allegiance)
-        {
-            _attackersInOrbit += arrivingFleet.FleetSize;
-            _attackerAllegiance = arrivingFleet.Allegiance;
-            _currentDefense_invader = FactionController.Instance.GetFactionDefense(_attackerAllegiance);
-            if (_basesInOrbit > 0)
-            {
-                _currentDefense_owner = 3 * FactionController.Instance.GetFactionDefense(_allegiance);
-            }
-            else
-            {
-                _currentDefense_owner = FactionController.Instance.GetFactionDefense(_allegiance);
-            }
-                
-        }
 
-        RenderPlanet();
-        arrivingFleet.RemoveFleet();
-    }
+
+    //public void ReceiveFleet(FleetHandler arrivingFleet)
+    //{
+    //    if (_allegiance == 0)
+    //    {
+    //        _defendersInOrbit += arrivingFleet.FleetSize;
+    //        _allegiance = arrivingFleet.Allegiance;
+    //    }
+    //    else if (arrivingFleet.Allegiance == _allegiance)
+    //    {
+    //        _defendersInOrbit += arrivingFleet.FleetSize;
+    //    }
+    //    else if (arrivingFleet.Allegiance != _allegiance)
+    //    {
+    //        _attackersInOrbit += arrivingFleet.FleetSize;
+    //        _attackerAllegiance = arrivingFleet.Allegiance;
+    //        _currentDefense_invader = FactionController.Instance.GetFactionDefense(_attackerAllegiance);
+    //        if (_basesInOrbit > 0)
+    //        {
+    //            _currentDefense_owner = 3 * FactionController.Instance.GetFactionDefense(_allegiance);
+    //        }
+    //        else
+    //        {
+    //            _currentDefense_owner = FactionController.Instance.GetFactionDefense(_allegiance);
+    //        }
+                
+    //    }
+
+    //    RenderPlanet();
+    //    arrivingFleet.RemoveFleet();
+    //}
 
     #endregion
 

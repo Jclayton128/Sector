@@ -22,49 +22,49 @@ public class FleetHandler : MonoBehaviour
     PlanetHandler _destination;
 
 
-    public void SetFleet(int size, float speed, PlanetHandler destination, int allegiance)
-    {
-        _fleetSize = size;
-        _speed = speed;
-        transform.up = destination.transform.position - transform.position;
-        _allegiance = allegiance;
-        _destination = destination;
+    //public void SetFleet(int size, float speed, PlanetHandler destination, int allegiance)
+    //{
+    //    _fleetSize = size;
+    //    _speed = speed;
+    //    transform.up = destination.transform.position - transform.position;
+    //    _allegiance = allegiance;
+    //    _destination = destination;
 
-        RenderFleet(size, allegiance);
+    //    RenderFleet(size, allegiance);
 
-    }
+    //}
 
-    private void RenderFleet(int size, int allegiance)
-    {
-        for (int i = 0; i < _srs.Count; i++)
-        {
-            if (i < size)
-            {
-                _srs[i].enabled = true;
-            }
-            else
-            {
-                _srs[i].enabled = false;
-            }
-        }
+    //private void RenderFleet(int size, int allegiance)
+    //{
+    //    for (int i = 0; i < _srs.Count; i++)
+    //    {
+    //        if (i < size)
+    //        {
+    //            _srs[i].enabled = true;
+    //        }
+    //        else
+    //        {
+    //            _srs[i].enabled = false;
+    //        }
+    //    }
 
-        //TODO update the color of the fleet to match allegiance
-    }
+    //    //TODO update the color of the fleet to match allegiance
+    //}
 
-    private void Update()
-    {
-        transform.position += transform.up * _speed * Time.deltaTime;
-        //check for distance to destination planet
-        UpdateCheckDistance();
-    }
+    //private void Update()
+    //{
+    //    transform.position += transform.up * _speed * Time.deltaTime;
+    //    //check for distance to destination planet
+    //    UpdateCheckDistance();
+    //}
 
-    private void UpdateCheckDistance()
-    {
-        if ((_destination.transform.position - transform.position).magnitude <= _closeEnough)
-        {
-            _destination.ReceiveFleet(this);
-        }
-    }
+    //private void UpdateCheckDistance()
+    //{
+    //    if ((_destination.transform.position - transform.position).magnitude <= _closeEnough)
+    //    {
+    //        _destination.ReceiveFleet(this);
+    //    }
+    //}
 
     public void RemoveFleet()
     {

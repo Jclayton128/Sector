@@ -121,7 +121,12 @@ public class ProductionHandler : MonoBehaviour
         if (_production > 1)
         {
             _production = 0;
-            _planetHandler.ReceiveProducedShips(1 * _planetHandler.CitiesOnPlanet);
+            for (int i = 0; i < _planetHandler.CitiesOnPlanet; i++)
+            {
+                var newShip = Instantiate(IconLibrary.Instance.ShipPrefab, transform.position, Quaternion.identity);
+                newShip.SetAllegiance(_planetHandler.Allegiance);
+                _planetHandler.ReceiveShipHandler(newShip);
+            }
         }
     }
 
