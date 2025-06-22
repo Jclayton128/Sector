@@ -64,18 +64,7 @@ public class PlanetHandler : MonoBehaviour
         if (_shipsInOrbit_Invader.Count > 0 && _shipsInOrbit_Owner.Count == 0)
         {
             //invert allegiance
-            Debug.Log("Allegiance Turnover");
-            _allegiance *= -1;
-
-            _shipsInOrbit_Owner.Clear();
-            _shipsInOrbit_Owner = _shipsInOrbit_Invader;
-
-            foreach (var ship in _shipsInOrbit_Owner)
-            {
-                ship.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
-            }
-
-            _shipsInOrbit_Invader.Clear();
+            ExecuteAllegianceTurnover();
         }
 
         //include bases in the defender count
@@ -88,6 +77,22 @@ public class PlanetHandler : MonoBehaviour
                 _countdownToNextCombatRound = _timeBetweenBattles;
             }
         }        
+    }
+
+    private void ExecuteAllegianceTurnover()
+    {
+        Debug.Log("Allegiance Turnover");
+        _allegiance = _attackerAllegiance;
+
+        _shipsInOrbit_Owner.Clear();
+        _shipsInOrbit_Owner = _shipsInOrbit_Invader;
+
+        foreach (var ship in _shipsInOrbit_Owner)
+        {
+            ship.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
+        }
+
+        _shipsInOrbit_Invader.Clear();
     }
 
     private void ResolveCombatRound()
@@ -221,6 +226,11 @@ public class PlanetHandler : MonoBehaviour
             _shipsCommanded = Mathf.RoundToInt(_shipsInOrbit_Owner.Count * _fleetCommandFactor);
             _shipsCommanded = Mathf.Clamp(_shipsCommanded, 0, _shipsInOrbit_Owner.Count);
 
+            for (int i = 0; i < _shipsCommanded; i++)
+            {
+                _shipsInOrbit_Owner[i].RecolorShip(Color.green);
+            }
+
             _ringShips.HighlightSpots(_shipsCommanded, Color.green);
 
         }
@@ -244,6 +254,12 @@ public class PlanetHandler : MonoBehaviour
             SendFleet(_shipsCommanded);
         }
 
+        foreach (var ship in _shipsInOrbit_Owner)
+        {
+            ship.RecolorShip(Color.white);
+        }
+
+        _shipsCommanded = 0;
         _isCommanding = false;
         _ringSelection.SetSelectionState(PlanetSelectionDriver.SelectionStates.Dehighlight);
         _fleetCommandFactor = 0;
@@ -311,7 +327,7 @@ public class PlanetHandler : MonoBehaviour
             _shipsInOrbit_Owner.Add(newShip);
             newShip.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
         }
-        else if (newShip.Allegiance != _allegiance && _shipsInOrbit_Owner.Count > 0)
+        else if (newShip.Allegiance != _allegiance)
         {
             _shipsInOrbit_Invader.Add(newShip);
             _attackerAllegiance = newShip.Allegiance;

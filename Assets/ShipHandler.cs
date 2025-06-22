@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class ShipHandler : MonoBehaviour
 {
+    //refs
+    ParticleSystem _ps;
+    ParticleSystem.MainModule _psmm;
+    SpriteRenderer _sr;
+
     //settings
-    float _closeEnough_Planet = 1.2f;
+    float _closeEnough_Planet = 0.3f;
     float _closeEnough_Position = 0.1f;
 
 
     //state
-    int _allegiance;
+    [SerializeField] int _allegiance;
     public int Allegiance => _allegiance;
     [SerializeField] bool _hasDestination = false;
     [SerializeField] float _speed;
@@ -18,9 +23,24 @@ public class ShipHandler : MonoBehaviour
     [SerializeField] Vector3 _destinationPosition;
     [SerializeField] Transform _destinationTransform;
 
+    private void Awake()
+    {
+        _sr = GetComponent<SpriteRenderer>();
+        _ps = GetComponent<ParticleSystem>();
+        _psmm = _ps.main;
+    }
+
     public void SetAllegiance(int allegiance)
     {
         _allegiance = allegiance;
+        if (_allegiance == 1)
+        {
+            RecolorShip(Color.white);
+        }
+        else if (_allegiance == -1)
+        {
+            RecolorShip(Color.red);
+        }
     }
 
     public void SetShipDestinationAsPlanet(PlanetHandler destinationPlanet)
@@ -33,6 +53,7 @@ public class ShipHandler : MonoBehaviour
 
     public void SetShipDestinationInOrbit(Vector2 destinationPos, Transform destinationTransform)
     {
+        Debug.Log($"new orbit destination under this transform: {destinationTransform}");
         _destinationPlanet = null;
         _hasDestination = true;
         _speed = FactionController.Instance.GetFactionSpeed(_allegiance);
@@ -70,6 +91,13 @@ public class ShipHandler : MonoBehaviour
         }
 
     }
+
+    public void RecolorShip(Color color)
+    {
+        _sr.color = color;
+        _psmm.startColor = color;
+    }
+
 
     public void DestroySelf()
     {

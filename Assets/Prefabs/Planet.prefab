@@ -509,7 +509,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3206135, y: 1.3206135, z: 1.3206135}
+  m_LocalScale: {x: 1.3021249, y: 1.3021249, z: 1.3021249}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 738949123148995703}
@@ -581,7 +581,7 @@ MonoBehaviour:
   _sr: {fileID: 5760411557107882644}
   _highlightSprite: {fileID: 1751607008080603626, guid: b886b45c6aa281b44b04c8b8fbf05cda, type: 3}
   _commandedSprite: {fileID: -3643760154290002694, guid: c1ca91797b06ead43ad9b0d2edad6c92, type: 3}
-  _commandingSprite: {fileID: -5338738485830625687, guid: 619755135b0d6ff4ebbbd82291ef5388, type: 3}
+  _commandingSprite: {fileID: -3643760154290002694, guid: c1ca91797b06ead43ad9b0d2edad6c92, type: 3}
 --- !u!1 &2722989695567457881
 GameObject:
   m_ObjectHideFlags: 0
