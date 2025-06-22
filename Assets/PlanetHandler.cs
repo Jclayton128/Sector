@@ -18,7 +18,12 @@ public class PlanetHandler : MonoBehaviour
     //settings
     [SerializeField] float _commandRate = 0.75f;
     [SerializeField] FleetHandler _fleetPrefab = null;
-    [SerializeField] float _timeBetweenBattles = 0.5f;
+
+    [Header("Combat Values")]
+    //[SerializeField] float _timeBetweenBattles = 0.5f;
+    [SerializeField] float _kVal = 0.1f;
+
+
 
     //stub in faction 
 
@@ -38,14 +43,16 @@ public class PlanetHandler : MonoBehaviour
     [SerializeField] int _allegiance = 1;
     public int Allegiance => _allegiance;
 
+
+    [Header("Combat State")]
     float _countdownToNextCombatRound;
     [SerializeField] int _currentDefense_owner;
     [SerializeField] int _currentDefense_invader;
-
-    int _attackerAllegiance;
-
+    int _invaderAllegiance;
     [SerializeField] List<ShipHandler> _shipsInOrbit_Owner = new List<ShipHandler>();
     [SerializeField] List<ShipHandler> _shipsInOrbit_Invader = new List<ShipHandler>();
+    float _push;
+
 
 
     #region Flow
@@ -64,7 +71,7 @@ public class PlanetHandler : MonoBehaviour
         if (_shipsInOrbit_Invader.Count > 0 && _shipsInOrbit_Owner.Count == 0)
         {
             //invert allegiance
-            ExecuteAllegianceTurnover(_attackerAllegiance);
+            ExecuteAllegianceTurnover(_invaderAllegiance);
         }
 
         //include bases in the defender count
@@ -74,16 +81,32 @@ public class PlanetHandler : MonoBehaviour
             if (_countdownToNextCombatRound <= 0)
             {
                 ResolveCombatRound();
-                _countdownToNextCombatRound = _timeBetweenBattles;
+
+                _countdownToNextCombatRound = CalculateTimeUntilNextBattle();
             }
         }        
+    }
+
+    private float CalculateTimeUntilNextBattle()
+    {
+        float timeUntilNextRound;
+        //with matched forces, this should be _timeBetweenBattles.
+        //Number of units * unit speed vs enemy count * speed.
+
+        _push = (_shipsInOrbit_Owner.Count * FactionController.Instance.GetFactionSpeed(_allegiance)) -
+            (_shipsInOrbit_Invader.Count * FactionController.Instance.GetFactionSpeed(_invaderAllegiance));
+
+        timeUntilNextRound = 1 / (1 + Mathf.Exp(-1 * _kVal * _push));
+        timeUntilNextRound = Mathf.Clamp(timeUntilNextRound, 0.1f, 1f);
+        Debug.Log("combat time: " +  timeUntilNextRound);
+        return timeUntilNextRound;
     }
 
     private void ExecuteAllegianceTurnover(int newAllegiance)
     {
         Debug.Log("Allegiance Turnover");
         _allegiance = newAllegiance;
-        _attackerAllegiance = 0;
+        _invaderAllegiance = 0;
 
         _shipsInOrbit_Owner = new List<ShipHandler>(_shipsInOrbit_Invader);
 
@@ -103,7 +126,7 @@ public class PlanetHandler : MonoBehaviour
     private void ResolveCombatRound()
     {
         int attackRoll_def = UnityEngine.Random.Range(0, FactionController.Instance.GetFactionAttack(_allegiance));
-        int attackRoll_atk = UnityEngine.Random.Range(0, FactionController.Instance.GetFactionAttack(_attackerAllegiance));
+        int attackRoll_atk = UnityEngine.Random.Range(0, FactionController.Instance.GetFactionAttack(_invaderAllegiance));
 
         if (attackRoll_atk > attackRoll_def)
         {
@@ -156,7 +179,7 @@ public class PlanetHandler : MonoBehaviour
             //RenderPlanet();
             Debug.Log("Attacker destroyed");
 
-            _currentDefense_invader = FactionController.Instance.GetFactionDefense(_attackerAllegiance);
+            _currentDefense_invader = FactionController.Instance.GetFactionDefense(_invaderAllegiance);
         }
 
 
@@ -337,13 +360,13 @@ public class PlanetHandler : MonoBehaviour
         else if (newShip.Allegiance != _allegiance)
         {
             _shipsInOrbit_Invader.Add(newShip);
-            _attackerAllegiance = newShip.Allegiance;
+            _invaderAllegiance = newShip.Allegiance;
             newShip.SetShipDestinationInOrbit(_ringEnemy.GetRandomPositionInOrbit(), _ringEnemy.transform);
         }
         else if (_shipsInOrbit_Owner.Count == 0)
         {
-            _attackerAllegiance = newShip.Allegiance;
-            ExecuteAllegianceTurnover(_attackerAllegiance);
+            _invaderAllegiance = newShip.Allegiance;
+            ExecuteAllegianceTurnover(_invaderAllegiance);
             //_allegiance = newShip.Allegiance;
         }
 
