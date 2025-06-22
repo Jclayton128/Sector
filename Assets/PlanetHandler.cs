@@ -98,7 +98,7 @@ public class PlanetHandler : MonoBehaviour
 
         timeUntilNextRound = 1 / (1 + Mathf.Exp(-1 * _kVal * _push));
         timeUntilNextRound = Mathf.Clamp(timeUntilNextRound, 0.1f, 1f);
-        Debug.Log("combat time: " +  timeUntilNextRound);
+        //Debug.Log("combat time: " +  timeUntilNextRound);
         return timeUntilNextRound;
     }
 
@@ -284,7 +284,7 @@ public class PlanetHandler : MonoBehaviour
 
         foreach (var ship in _shipsInOrbit_Owner)
         {
-            ship.RecolorShip(Color.white);
+            ship.RecolorShip(IconLibrary.Instance.GetFactionColor(_allegiance));
         }
 
         _shipsCommanded = 0;
@@ -310,7 +310,7 @@ public class PlanetHandler : MonoBehaviour
         {
             ship.SetShipDestinationAsPlanet(InputController.Instance.PlanetUnderCursor);
             _shipsInOrbit_Owner.Remove(ship);
-            ship.RecolorShip(Color.white);
+            ship.RecolorShip(IconLibrary.Instance.GetFactionColor(_allegiance));
         }
 
     }

@@ -134,6 +134,22 @@ PrefabInstance:
       propertyPath: m_text
       value: Computer
       objectReference: {fileID: 0}
+    - target: {fileID: 794883364902561695, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 794883364902561695, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseComputerDefense
+      objectReference: {fileID: 0}
+    - target: {fileID: 2720386768216009764, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 2720386768216009764, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseComputerSpeed
+      objectReference: {fileID: 0}
     - target: {fileID: 4482242807134228612, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -214,6 +230,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4715284598144573776, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 4715284598144573776, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseComputerAttack
+      objectReference: {fileID: 0}
+    - target: {fileID: 5363484545053058847, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 5363484545053058847, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseComputerAttack
+      objectReference: {fileID: 0}
+    - target: {fileID: 6568896788380296519, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 6568896788380296519, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DecreaseComputerDefense
+      objectReference: {fileID: 0}
     - target: {fileID: 8588230450100152204, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
       propertyPath: m_text
       value: 1.51
@@ -221,6 +261,14 @@ PrefabInstance:
     - target: {fileID: 8671243443255472626, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
       propertyPath: m_Name
       value: FactionStatBlock_Computer
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126058474975175112, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 9126058474975175112, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DecreaseComputerSpeed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -255,6 +303,7 @@ GameObject:
   - component: {fileID: 160715049}
   - component: {fileID: 160715051}
   - component: {fileID: 160715052}
+  - component: {fileID: 160715053}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -323,6 +372,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4110ee8cb1b16cd4288ab8d6474b7455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &160715053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160715048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be794a4853a556940ae0da8660e43a5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &170536322
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,12 +413,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1806e9deb8791b47ac8713bf38b9fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ship_1: {fileID: 2111436282999558937, guid: 6a5ea4a127b13e54dbe49e54940889cd, type: 3}
-  Ship_10: {fileID: -6065484490946029943, guid: 16d00f87551d788408fb6d6092a77701, type: 3}
-  Ship_100: {fileID: -3159062719267100960, guid: 69433493a4d974143a30f995116d747f, type: 3}
-  Base_1: {fileID: 1471139332442960654, guid: 70bd90aed9b34a240966415625319de4, type: 3}
-  Base_10: {fileID: 2248593205998495839, guid: 303e76a6af444dc48a9549b066f2dcf7, type: 3}
-  Base_100: {fileID: 6867016993836950335, guid: 05da6336a80bf8143b32f8d033ea2c5a, type: 3}
+  PlayerColor: {r: 1, g: 1, b: 1, a: 1}
+  EnemyColor: {r: 1, g: 0, b: 0, a: 1}
   ShipPrefab: {fileID: 8918268344123577727, guid: 023eb6703b8f1a741a847227cbda75c0, type: 3}
 --- !u!4 &170536324
 Transform:
@@ -797,7 +854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _citiesOnPlanet
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6147042861785427939, guid: 848efcb1051442d4889569aafb22a0d2, type: 3}
       propertyPath: _attackersInOrbit
@@ -1024,10 +1081,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1165545635}
     m_Modifications:
-    - target: {fileID: 360960464277653117, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
-      propertyPath: m_text
-      value: Player
-      objectReference: {fileID: 0}
+    - target: {fileID: 794883364902561695, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 2720386768216009764, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
     - target: {fileID: 4482242807134228612, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1108,14 +1169,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8588230450100152204, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
-      propertyPath: m_text
-      value: 1.1
-      objectReference: {fileID: 0}
+    - target: {fileID: 4715284598144573776, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 5363484545053058847, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
+    - target: {fileID: 6568896788380296519, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
     - target: {fileID: 8671243443255472626, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
       propertyPath: m_Name
       value: FactionStatBlock_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 9126058474975175112, guid: f78b75ab964087f44b32b1470b1f5d9d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 160715053}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1145,7 +1218,7 @@ SceneRoots:
   - {fileID: 1273026972}
   - {fileID: 1686610992}
   - {fileID: 346212460}
-  - {fileID: 160715050}
   - {fileID: 1165545635}
   - {fileID: 170536324}
   - {fileID: 661383247}
+  - {fileID: 160715050}

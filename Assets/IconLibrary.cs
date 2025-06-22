@@ -12,8 +12,16 @@ public class IconLibrary : MonoBehaviour
 
     public ShipHandler ShipPrefab = null;
 
+
     private void Awake()
     {
         Instance = this;
+    }
+
+    public Color GetFactionColor(int allegiance)
+    {
+        if (allegiance == 1) return PlayerColor;
+        else if (allegiance == -1) return EnemyColor;
+        else return Color.blue;
     }
 }

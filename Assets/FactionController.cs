@@ -57,12 +57,44 @@ public class FactionController : MonoBehaviour
         else return 0;
     }
 
+    public void ModifyFactionAttack(int allegiance, int amountToAdd)
+    {
+        if (allegiance == 1)
+        {
+            //Debug.Log("Changing Farming by " + amountToAdd);
+            PlayerFaction.Attack += amountToAdd;
+            _factionStatDriver_Player.PushFactionStatus(PlayerFaction);
+        }
+        else if (allegiance == -1)
+        {
+            ComputerFaction.Attack += amountToAdd;
+            _factionStatDriver_Computer.PushFactionStatus(ComputerFaction);
+        }
+    }
+
+
     public int GetFactionDefense(int allegiance)
     {
         if (allegiance == 1) return PlayerFaction.Defense;
         else if (allegiance == -1) return ComputerFaction.Defense;
         else return 0;
     }
+
+    public void ModifyFactionDefense(int allegiance, int amountToAdd)
+    {
+        if (allegiance == 1)
+        {
+            //Debug.Log("Changing Farming by " + amountToAdd);
+            PlayerFaction.Defense += amountToAdd;
+            _factionStatDriver_Player.PushFactionStatus(PlayerFaction);
+        }
+        else if (allegiance == -1)
+        {
+            ComputerFaction.Defense += amountToAdd;
+            _factionStatDriver_Computer.PushFactionStatus(ComputerFaction);
+        }
+    }
+
 
     public float GetFactionRange(int allegiance)
     {
@@ -71,11 +103,41 @@ public class FactionController : MonoBehaviour
         else return 0;
     }
 
+    public void ModifyFactionRange(int allegiance, float amountToAdd)
+    {
+        if (allegiance == 1)
+        {
+            //Debug.Log("Changing Farming by " + amountToAdd);
+            PlayerFaction.Range += amountToAdd;
+            _factionStatDriver_Player.PushFactionStatus(PlayerFaction);
+        }
+        else if (allegiance == -1)
+        {
+            ComputerFaction.Range += amountToAdd;
+            _factionStatDriver_Computer.PushFactionStatus(ComputerFaction);
+        }
+    }
+
+
     public float GetFactionSpeed(int allegiance)
     {
         if (allegiance == 1) return PlayerFaction.Speed;
         else if (allegiance == -1) return ComputerFaction.Speed;
         else return 0;
+    }
+    public void ModifyFactionSpeed(int allegiance, float amountToAdd)
+    {
+        if (allegiance == 1)
+        {
+            //Debug.Log("Changing Farming by " + amountToAdd);
+            PlayerFaction.Speed += amountToAdd;
+            _factionStatDriver_Player.PushFactionStatus(PlayerFaction);
+        }
+        else if (allegiance == -1)
+        {
+            ComputerFaction.Speed += amountToAdd;
+            _factionStatDriver_Computer.PushFactionStatus(ComputerFaction);
+        }
     }
 
     public float GetFactionFarmingBonus(int allegiance)
