@@ -64,9 +64,17 @@ public class PlanetHandler : MonoBehaviour
         if (_shipsInOrbit_Invader.Count > 0 && _shipsInOrbit_Owner.Count == 0)
         {
             //invert allegiance
+            Debug.Log("Allegiance Turnover");
             _allegiance *= -1;
 
+            _shipsInOrbit_Owner.Clear();
             _shipsInOrbit_Owner = _shipsInOrbit_Invader;
+
+            foreach (var ship in _shipsInOrbit_Owner)
+            {
+                ship.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
+            }
+
             _shipsInOrbit_Invader.Clear();
         }
 
@@ -111,8 +119,9 @@ public class PlanetHandler : MonoBehaviour
             else
             {
                 int last = _shipsInOrbit_Owner.Count - 1;
-                _shipsInOrbit_Owner.RemoveAt(last);
+
                 _shipsInOrbit_Owner[last].DestroySelf();
+                _shipsInOrbit_Owner.RemoveAt(last);
 
                 //RenderPlanet();
                 Debug.Log("Defender Ship destroyed");
@@ -126,18 +135,16 @@ public class PlanetHandler : MonoBehaviour
             {
                 _currentDefense_owner = FactionController.Instance.GetFactionDefense(_allegiance);
             }
-
-
-
-
         }
         else if (_currentDefense_invader <= 0)
         {
             int last = _shipsInOrbit_Invader.Count - 1;
-            _shipsInOrbit_Invader.RemoveAt(last);
+
             _shipsInOrbit_Invader[last].DestroySelf();
-            RenderPlanet();
-            //Debug.Log("Attacker destroyed");
+            _shipsInOrbit_Invader.RemoveAt(last);
+
+            //RenderPlanet();
+            Debug.Log("Attacker destroyed");
 
             _currentDefense_invader = FactionController.Instance.GetFactionDefense(_attackerAllegiance);
         }
@@ -307,6 +314,7 @@ public class PlanetHandler : MonoBehaviour
         else if (newShip.Allegiance != _allegiance && _shipsInOrbit_Owner.Count > 0)
         {
             _shipsInOrbit_Invader.Add(newShip);
+            _attackerAllegiance = newShip.Allegiance;
             newShip.SetShipDestinationInOrbit(_ringEnemy.GetRandomPositionInOrbit(), _ringEnemy.transform);
         }
         else if (_shipsInOrbit_Owner.Count == 0)
