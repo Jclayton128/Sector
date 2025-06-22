@@ -7,13 +7,8 @@ public class IconLibrary : MonoBehaviour
     public static IconLibrary Instance { get; private set; }
 
     //settings
-    public Sprite Ship_1 = null;
-    public Sprite Ship_10 = null;
-    public Sprite Ship_100 = null;
-
-    public Sprite Base_1 = null;
-    public Sprite Base_10 = null;
-    public Sprite Base_100 = null;
+    public Color PlayerColor = Color.white;
+    public Color EnemyColor = Color.red;
 
     public ShipHandler ShipPrefab = null;
 

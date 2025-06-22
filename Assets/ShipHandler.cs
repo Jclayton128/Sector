@@ -5,9 +5,10 @@ using UnityEngine;
 public class ShipHandler : MonoBehaviour
 {
     //refs
-    ParticleSystem _ps;
+    [SerializeField] ParticleSystem _ps;
     ParticleSystem.MainModule _psmm;
     SpriteRenderer _sr;
+    [SerializeField] ParticleSystem _ps_DeathPuff = null;
 
     //settings
     float _closeEnough_Planet = 0.3f;
@@ -26,7 +27,6 @@ public class ShipHandler : MonoBehaviour
     private void Awake()
     {
         _sr = GetComponent<SpriteRenderer>();
-        _ps = GetComponent<ParticleSystem>();
         _psmm = _ps.main;
     }
 
@@ -48,12 +48,12 @@ public class ShipHandler : MonoBehaviour
         _hasDestination = true;
         _speed = FactionController.Instance.GetFactionSpeed(_allegiance);
         _destinationPlanet = destinationPlanet;
+        //_destinationPosition = _destinationPlanet.GetRandomEnemyOrbit();
         transform.parent = null;
     }
 
     public void SetShipDestinationInOrbit(Vector2 destinationPos, Transform destinationTransform)
     {
-        Debug.Log($"new orbit destination under this transform: {destinationTransform}");
         _destinationPlanet = null;
         _hasDestination = true;
         _speed = FactionController.Instance.GetFactionSpeed(_allegiance);
@@ -101,6 +101,14 @@ public class ShipHandler : MonoBehaviour
 
     public void DestroySelf()
     {
-        Destroy(gameObject);
+        transform.parent = null;
+        _sr.enabled = false;
+        _ps.Stop();
+
+        ParticleSystem.MainModule dpm = _ps_DeathPuff.main;
+        dpm.startColor = _psmm.startColor;
+
+        _ps_DeathPuff.Emit(1);
+        Destroy(gameObject, 3f);
     }
 }

@@ -64,7 +64,7 @@ public class PlanetHandler : MonoBehaviour
         if (_shipsInOrbit_Invader.Count > 0 && _shipsInOrbit_Owner.Count == 0)
         {
             //invert allegiance
-            ExecuteAllegianceTurnover();
+            ExecuteAllegianceTurnover(_attackerAllegiance);
         }
 
         //include bases in the defender count
@@ -79,13 +79,18 @@ public class PlanetHandler : MonoBehaviour
         }        
     }
 
-    private void ExecuteAllegianceTurnover()
+    private void ExecuteAllegianceTurnover(int newAllegiance)
     {
         Debug.Log("Allegiance Turnover");
-        _allegiance = _attackerAllegiance;
+        _allegiance = newAllegiance;
+        _attackerAllegiance = 0;
 
-        _shipsInOrbit_Owner.Clear();
-        _shipsInOrbit_Owner = _shipsInOrbit_Invader;
+        _shipsInOrbit_Owner = new List<ShipHandler>(_shipsInOrbit_Invader);
+
+        _citiesOnPlanet = 0;
+        _productionHandler.SetProductionMode(ProductionHandler.ProductionModes.Farming);
+        RenderPlanet();
+        
 
         foreach (var ship in _shipsInOrbit_Owner)
         {
@@ -282,6 +287,7 @@ public class PlanetHandler : MonoBehaviour
         {
             ship.SetShipDestinationAsPlanet(InputController.Instance.PlanetUnderCursor);
             _shipsInOrbit_Owner.Remove(ship);
+            ship.RecolorShip(Color.white);
         }
 
     }
@@ -325,22 +331,40 @@ public class PlanetHandler : MonoBehaviour
         if (newShip.Allegiance == _allegiance)
         {
             _shipsInOrbit_Owner.Add(newShip);
-            newShip.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
+            
+            //newShip.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
         }
-        else if (newShip.Allegiance != _allegiance)
-        {
-            _shipsInOrbit_Invader.Add(newShip);
-            _attackerAllegiance = newShip.Allegiance;
-            newShip.SetShipDestinationInOrbit(_ringEnemy.GetRandomPositionInOrbit(), _ringEnemy.transform);
-        }
+        //else if (newShip.Allegiance != _allegiance)
+        //{
+        //    _shipsInOrbit_Invader.Add(newShip);
+        //    _attackerAllegiance = newShip.Allegiance;
+        //    newShip.SetShipDestinationInOrbit(_ringEnemy.GetRandomPositionInOrbit(), _ringEnemy.transform);
+        //}
         else if (_shipsInOrbit_Owner.Count == 0)
         {
-            _allegiance = newShip.Allegiance;
+            _attackerAllegiance = newShip.Allegiance;
+            ExecuteAllegianceTurnover(_attackerAllegiance);
+            //_allegiance = newShip.Allegiance;
         }
 
         
         
     }
+
+    public Vector2 GetRandomOrbit(int allegiance)
+    {
+        if (_allegiance == allegiance)
+        {
+            return _ringShips.GetRandomPositionInOrbit();
+
+        }
+        else if (_allegiance != allegiance)
+        {
+            return _ringEnemy.GetRandomPositionInOrbit();
+        }
+        else return _ringShips.GetRandomPositionInOrbit();
+    }
+
 
     //public void ReceiveProducedShips(int shipsToAdd)
     //{
