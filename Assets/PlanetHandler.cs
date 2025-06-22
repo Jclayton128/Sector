@@ -332,14 +332,14 @@ public class PlanetHandler : MonoBehaviour
         {
             _shipsInOrbit_Owner.Add(newShip);
             
-            //newShip.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
+            newShip.SetShipDestinationInOrbit(_ringShips.GetRandomPositionInOrbit(), _ringShips.transform);
         }
-        //else if (newShip.Allegiance != _allegiance)
-        //{
-        //    _shipsInOrbit_Invader.Add(newShip);
-        //    _attackerAllegiance = newShip.Allegiance;
-        //    newShip.SetShipDestinationInOrbit(_ringEnemy.GetRandomPositionInOrbit(), _ringEnemy.transform);
-        //}
+        else if (newShip.Allegiance != _allegiance)
+        {
+            _shipsInOrbit_Invader.Add(newShip);
+            _attackerAllegiance = newShip.Allegiance;
+            newShip.SetShipDestinationInOrbit(_ringEnemy.GetRandomPositionInOrbit(), _ringEnemy.transform);
+        }
         else if (_shipsInOrbit_Owner.Count == 0)
         {
             _attackerAllegiance = newShip.Allegiance;
